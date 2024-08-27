@@ -10,7 +10,7 @@
 	overflow: auto;
 	background: #ecf0f1;
 	padding: 50px;
-	max-height: 700px;
+	max-height: 1200px;
 
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -28,11 +28,14 @@
 	position: relative;
 	width: 120px;
 	border-bottom: 5px solid #34495e;
-	background: #34495e;
+	-webkit-border-radius: 10px;
+	border-radius: 10px; 
+	background: #1d82e7;
 	color: #ecf0f1;
 	display: inline-block;
 	padding: 20px 10px;
 	margin: 0 10px;
+	font-weight: bolder;
 	cursor: pointer;
 }
 .organigrama table td .line-down{
@@ -59,12 +62,14 @@
 	position: absolute;
 	top: 0;
 	right: -40px;
-	background: #ecf0f1;
+	background: #acc203;
 	z-index: 2;
 	padding: 1px 1px 1px 1px;
 }
 .organigrama .nodo:hover .controls{
 	display: block;
+	background: #ecf0f1;
+	
 }
 
 .organigrama .nodo .btn-collapse{
@@ -75,6 +80,8 @@
 	left: 50%;
 	margin-top: 5px;
 	margin-left: -9px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px; 
 	font-size: 18px;
 	background: #ecf0f1;
 }
@@ -82,8 +89,8 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	color: #2c3e50;
-	background: #ecf0f1;
+	color: #0eb9ae;
+	background: #eded12;
 }
 .organigrama .nodo .nodo-nombre{
 	font-style: italic;
