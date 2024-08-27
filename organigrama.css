@@ -8,7 +8,7 @@
 */
 .organigrama{
 	overflow: auto;
-	background: #ecf0f1;
+	background: #226b7d;
 	padding: 50px;
 	max-height: 1200px;
 
@@ -68,7 +68,7 @@
 }
 .organigrama .nodo:hover .controls{
 	display: block;
-	background: #ecf0f1;
+	background: transparent;
 	
 }
 
