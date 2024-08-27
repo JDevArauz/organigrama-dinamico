@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Titulo</title>
+	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u' crossorigin='anonymous'>
+
+	<!-- Estilos para el organigrama -->
+	<link rel='stylesheet' type='text/css' href='organigrama.css'>
+</head>
+<body>
+
+
+<div id='myModal' class='modal fade in' tabindex='-1' role='dialog'>
+	<div class='modal-dialog' role='document'>
+		<div class="modal-content">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h4>Modal</h4>
+					<button class="close"></button>
+				</div>
+				<input class="panel-body">
+					Modificar
+				</input>
+				<div class="panel-footer">
+					<button type="button" class="btn btn-default" data-dismiss='modal'>Close</button>
+					<button type="submit" class='btn btn-primary'>Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Div contenedor del organigrama -->
+<div id='organigrama'>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- Carga de datos de ejemplo -->
+<script type='text/javascript' src='data.js'></script>
+<!-- Libreria para la creación del organigrama -->
+<script type='text/javascript' src='organigrama.js'></script>
+
+<script type='text/javascript'>
+	(function(){
+		// CARGANDO DATOS DE EJEMPLO
+		organigrama.data = data;
+		// CREANDO EL ORGANIGRAMA POR PRIMERA VEZ
+		organigrama.create('organigrama');
+		// AGREGANDO EVENTOS PARA AGREGAR, EDITAR Y ELIMINAR NODOS
+		organigrama.eventAdd(agregarEvento);
+		organigrama.eventEdit(editarEvento);
+		organigrama.eventRemove(eliminarEvento);
+
+
+		function agregarEvento(id){
+		// Lógica para agregar un nuevo nodo
+		var newId = prompt("Ingrese el ID del nuevo nodo:");
+		var newNombre = prompt("Ingrese el nombre del nuevo nodo:");
+		var newPuesto = prompt("Ingrese el puesto del nuevo nodo:");
+	
+		if(newId && newNombre && newPuesto){
+			agregarNodoHijo(data, id, {
+				"id": newId,
+				"puesto": newPuesto,
+				"nombre": newNombre,
+				"hijos": []
+			});
+			// RECARGANDO EL ORGANIGRAMA
+			organigrama.create('organigrama');
+		}
+	}
+	
+	function agregarNodoHijo(node, parentId, newNode){
+		if(node.id == parentId){
+			node.hijos.push(newNode);
+			return true;
+		}
+		for(var i = 0; i < node.hijos.length; i++){
+			if(agregarNodoHijo(node.hijos[i], parentId, newNode)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function eliminarEvento(id){
+		if(confirm("¿Está seguro de que desea eliminar este nodo?")){
+			eliminarNodo(data, id);
+			// RECARGANDO EL ORGANIGRAMA
+			organigrama.create('organigrama');
+		}
+	}
+	
+	function eliminarNodo(node, nodeId){
+		for(var i = 0; i < node.hijos.length; i++){
+			if(node.hijos[i].id == nodeId){
+				node.hijos.splice(i, 1);
+				return true;
+			} else {
+				if(eliminarNodo(node.hijos[i], nodeId)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	function editarEvento(id){
+		var node = buscarNodo(data, id);
+		if(node){
+			node.nombre = prompt("Ingrese el nuevo nombre del nodo:", node.nombre);
+			node.puesto = prompt("Ingrese el nuevo puesto del nodo:", node.puesto);
+			// RECARGANDO EL ORGANIGRAMA
+			organigrama.create('organigrama');
+		}
+	}
+	
+	function buscarNodo(node, nodeId){
+		if(node.id == nodeId){
+			return node;
+		}
+		for(var i = 0; i < node.hijos.length; i++){
+			var nodoEncontrado = buscarNodo(node.hijos[i], nodeId);
+			if(nodoEncontrado) return nodoEncontrado;
+		}
+		return null;
+	}
+		$('#myModal').modal({
+		  keyboard: true,
+		  backdrop: "static",
+		  show: false
+		})
+	})();
+</script>
+
+</body>
+</html>
